@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.octopus.graduationdesign.mapper.LoginTokenMapper">
+    <insert id="addToken">
+        insert into t_login_token(`value`, username, create_time, expire_time)
+        values (#{value}, #{username}, #{createTime}, #{expireTime})
+    </insert>
+    <update id="invalidTokenByUsername">
+        update t_login_token
+        set expire_time = null
+        where `username` = #{username}
+    </update>
+    <select id="getValidTokenByValue" resultType="com.octopus.graduationdesign.pojo.dao.LoginToken">
+        select id, `value`, username, create_time, expire_time
+        from t_login_token
+        where `value` = #{value}
+          and expire_time > now()
+    </select>
+</mapper>

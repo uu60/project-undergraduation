@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.octopus.graduationdesign.mapper.TaskMapper">
+
+    <insert id="addTask" keyProperty="id" useGeneratedKeys="true">
+        insert into t_task (`name`, username, model, conf, `state`, file_path, create_time)
+        values (#{task.name}, #{task.username}, #{task.model}, #{task.conf}, #{task.state}, #{task.filePath},
+                #{task.createTime})
+    </insert>
+
+    <update id="updateFailTask">
+        update t_task
+        set `state`     = #{task.state},
+            `exception` = #{task.exception},
+            done_time   = #{task.doneTime}
+        where id = #{task.id}
+    </update>
+    <update id="updateSucceedTask">
+        update t_task
+        set `state`       = #{task.state},
+            `result_path` = #{task.resultPath},
+            done_time     = #{task.doneTime}
+        where id = #{task.id}
+    </update>
+    <update id="updateProcessTask">
+        update t_task
+        set `state` = #{task.state}
+        where id = #{task.id}
+    </update>
+    <delete id="deleteTask">
+        delete
+        from t_task
+        where id = #{id}
+    </delete>
+    <select id="getTasksByState" resultType="com.octopus.graduationdesign.pojo.dao.Task">
+        select id, `name`, model, conf, create_time, done_time, `state`, `exception`, comment
+        from t_task
+        where username = #{username} and `state` in
+        <foreach collection="states" item="item" separator="," open="(" close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </select>
+    <select id="getResultPathById" resultType="java.lang.String">
+        select result_path
+        from t_task
+        where id = #{id}
+    </select>
+</mapper>

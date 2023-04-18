@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/graduation_design
+    username: root
+    password: Dd4124894
+  # redis都是默认配置可以不写
+  redis:
+    host: localhost
+    port: 6379
+    database: 1
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1GB
+      #请求大小为20M
+      max-request-size: 1GB
+server:
+  port: 8081
+mybatis:
+  mapper-locations: classpath:mappers/*Mapper.xml
+
+# 设置日志输出级别，默认就是info
+logging:
+  level:
+    root: info
+
+# 下面是自定义参数，使用@Value读取
+file:
+  undone-location: /Users/dujianzhang/graduation_design/undone/
+  done-location: /Users/dujianzhang/graduation_design/done/
+
+flask:
+  address: http://localhost:8082
+
